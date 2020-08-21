@@ -1,0 +1,6 @@
+tensorflow==2.2.0
+numpy==1.17.3
+scikit-learn==0.22.1
+keras==2.3.0
+fastprogress==0.2.3
+seqeval==0.0.12
