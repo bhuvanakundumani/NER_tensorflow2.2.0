@@ -58,28 +58,20 @@ def main():
     # Required parameters
     parser.add_argument("--data", default=None, type=str, required=True,help="Directory which has the data files for the task")
     parser.add_argument("--model_dir", default=None, type=str, required=True,help="Directory which has the model files for the task")
-    parser.add_argument("--predsingle", default=False, type=str, required=False, help="Set it to True and assign the sentence to Sentence variable.")
-    #parser.add_argument("--overwrite", default=False, type=bool, help="Set it to True to overwrite output directory")
-
+    parser.add_argument("--predsingle", default=False, type=str, required=False, help="Set it to True and assign the sentence to test_sentence variable.")
 
     args = parser.parse_args()
-
-    # if os.path.exists(args.output) and os.listdir(args.output) and not args.overwrite:
-    #     raise ValueError("Output directory ({}) already exists and is not empty. Set the overwrite flag to overwrite".format(args.output))
-    # if not os.path.exists(args.output):
-    #     os.makedirs(args.output)
 
     test_batch_size = 64
 
     # padding sentences and labels to max_length of 128
     max_seq_len = 128
     EMBEDDING_DIM = 100
-    test_sentence = "Munich Germany is Muenchener Rueckversicherungs AG"
+    test_sentence = "Steve went to Paris"
     idx2Label = pickle.load(open(os.path.join(args.model_dir, "idx2Label.pkl"), 'rb'))
     label2Idx = {v:k for k,v in idx2Label.items()}
     word2Idx = pickle.load(open(os.path.join(args.model_dir, "word2Idx.pkl"), 'rb'))
     embedding_matrix = pickle.load(open(os.path.join(args.model_dir, "embedding.pkl"), 'rb'))
-    #print(str(dict(itertools.islice(word2Idx.items(), 10))))
     logger.info("Loaded idx2Label, word2Idx and Embedding matrix pickle files")
 
     #Loading the model
@@ -135,14 +127,12 @@ def main():
         _,label_pred  = idx_to_label(pred_labels, true_labels, idx2Label)
         
         logger.info(f"Results for - \"{test_sentence}\"")
-        #sent = test_sentence.split(' ')
         
         label_pred = label_pred[0][:length] 
         pred_logits = pred_logits[0][:length]
         logger.info(f"Labels predicted are {label_pred}")
         logger.info(f"with a confidence of {pred_logits}")
-        # print(f"Labels predicted are {label_pred}")
-        # print(f"with a confidence of {pred_logits}")
+        
 
         
 if __name__ == "__main__":
