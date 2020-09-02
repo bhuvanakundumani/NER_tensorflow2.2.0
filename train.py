@@ -78,6 +78,7 @@ def main():
     for label in sorted_labels:
         label2Idx[label] = len(label2Idx)
 
+    num_labels = len(label2Idx)
     idx2Label = {v: k for k, v in label2Idx.items()}
     
     pickle.dump(idx2Label,open(os.path.join(args.output, "idx2Label.pkl"), 'wb'))
@@ -151,7 +152,7 @@ def main():
     valid_pb_max_len = math.ceil(float(len(valid_features))/float(valid_batch_size))
     test_pb_max_len = math.ceil(float(len(test_features))/float(test_batch_size))
 
-    model = TFNer(max_seq_len=max_seq_len, embed_input_dim=len(word2Idx), embed_output_dim=EMBEDDING_DIM, weights=[embedding_matrix], num_labels=max_seq_len)
+    model = TFNer(max_seq_len=max_seq_len, embed_input_dim=len(word2Idx), embed_output_dim=EMBEDDING_DIM, weights=[embedding_matrix], num_labels=num_labels)
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
     scce = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 
@@ -165,8 +166,8 @@ def main():
 
     def train_step_fn(sentences_batch, labels_batch):
         with tf.GradientTape() as tape:
-            logits = model(sentences_batch)
-            loss = scce(labels_batch, logits)
+            logits = model(sentences_batch) # batchsize, max_seq_len, num_labels
+            loss = scce(labels_batch, logits) #batchsize,max_seq_len
         grads = tape.gradient(loss, model.trainable_variables)
         optimizer.apply_gradients(list(zip(grads, model.trainable_variables)))
         return loss, logits
@@ -176,7 +177,6 @@ def main():
         loss = scce(labels_batch, logits)
         return loss, logits
     
-################################
     for epoch in epoch_bar:
         with train_summary_writer.as_default():
             for sentences_batch, labels_batch in progress_bar(batched_train_dataset, total=train_pb_max_len, parent=epoch_bar) :
@@ -204,7 +204,7 @@ def main():
    
     #Evaluating on test dataset 
 
-    test_model =  TFNer(max_seq_len=max_seq_len, embed_input_dim=len(word2Idx), embed_output_dim=EMBEDDING_DIM, weights=[embedding_matrix], num_labels=max_seq_len)
+    test_model =  TFNer(max_seq_len=max_seq_len, embed_input_dim=len(word2Idx), embed_output_dim=EMBEDDING_DIM, weights=[embedding_matrix], num_labels=num_labels)
     test_model.load_weights(f"{args.output}/model_weights")
     logger.info(f"Model weights restored")
 

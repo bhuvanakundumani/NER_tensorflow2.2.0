@@ -70,12 +70,13 @@ def main():
     test_sentence = "Steve went to Paris"
     idx2Label = pickle.load(open(os.path.join(args.model_dir, "idx2Label.pkl"), 'rb'))
     label2Idx = {v:k for k,v in idx2Label.items()}
+    num_labels = len(label2Idx)
     word2Idx = pickle.load(open(os.path.join(args.model_dir, "word2Idx.pkl"), 'rb'))
     embedding_matrix = pickle.load(open(os.path.join(args.model_dir, "embedding.pkl"), 'rb'))
     logger.info("Loaded idx2Label, word2Idx and Embedding matrix pickle files")
 
     #Loading the model
-    testmodel =  TFNer(max_seq_len=max_seq_len, embed_input_dim=len(word2Idx), embed_output_dim=EMBEDDING_DIM, weights=[embedding_matrix], num_labels=max_seq_len)
+    testmodel =  TFNer(max_seq_len=max_seq_len, embed_input_dim=len(word2Idx), embed_output_dim=EMBEDDING_DIM, weights=[embedding_matrix], num_labels=num_labels)
     testmodel.load_weights(f"{args.model_dir}/model_weights")
     logger.info("Model weights restored")
 
