@@ -1,6 +1,10 @@
 
 NER TF 2.0 implementation for CoNLL-2003 NER dataset
 
+A detailed blog for this implementation is available at
+
+https://medium.com/analytics-vidhya/ner-tensorflow-2-2-0-9f10dcf5a0a
+
 'data' folder has the dataset. Model output files will be written in the 'model_ouput; directory. 
 
 To train the model
@@ -23,3 +27,4 @@ Visualisations
 tensorboard --logdir=model_output/logs/train --port=6006 --bind_all
 tensorboard --logdir=model_output/logs/valid --port=6006 --bind_all
 ```
+
