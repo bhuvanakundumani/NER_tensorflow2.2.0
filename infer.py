@@ -94,7 +94,7 @@ class Ner:
         pred_logits = pred_logits[0][:length]
         words = word_tokenize(text)
         assert len(label_pred) == len(words)
-        zip_val = zip(words, label_pred, pred_logits)
+        zip_val = zip(words, label_pred)
         
         output = [{"word":word,"tag":label} for  word, label in zip_val]
 
