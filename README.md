@@ -78,4 +78,4 @@ tensorboard --logdir=model_output/logs/valid --port=6006 --bind_all
 #### train loss 
 ![train loss image](/img/trainloss.png)
 #### valid loss 
-![valid loss image](/img/validloss.png  =100x20)
+![valid loss image](/img/validloss.png)
