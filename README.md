@@ -22,9 +22,60 @@ Predict a single sentence - Assign the sentence to test_sentence variable.
 python3 predict.py --data data --model_dir model_output --predsingle True
 ```
 
+
+# REST-API
+NER model deployed as REST API
+
+```bash
+python app.py
+```
+
+API will be live at `0.0.0.0:8000` endpoint `predict`
+
+#### cURL request
+` curl -X POST http://0.0.0.0:8000/predict -H 'Content-Type: application/json' -d '{ "text": "John is in New York" }'`
+
+
+Output
+```json
+{
+    "result": [
+        {
+            "word": "John",
+            "tag": "B-PER",
+            
+        },
+        {
+            
+            "word": "is",
+            "tag": "O"
+        },
+        {
+            
+            "word": "in",
+            "tag": "O"
+        },
+         {
+            "word": "New",
+            "tag": "B-LOC",
+            
+        },
+        {
+            "word": "York",
+            "tag": "I-LOC",
+            
+        }
+        
+    ]
+}
+
 Visualisations 
 ```bash
 tensorboard --logdir=model_output/logs/train --port=6006 --bind_all
 tensorboard --logdir=model_output/logs/valid --port=6006 --bind_all
 ```
 
+#### train loss 
+![train loss image](/img/trainloss.png)
+#### valid loss 
+![valid loss image](/img/validloss.png)

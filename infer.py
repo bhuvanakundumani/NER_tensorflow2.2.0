@@ -21,7 +21,6 @@ class Ner:
         self.label2Idx = {v:k for k,v in self.idx2Label.items()}
         self.word2Idx = pickle.load(open(os.path.join(model_dir, "word2Idx.pkl"), 'rb'))
         self.embedding_matrix = pickle.load(open(os.path.join(model_dir, "embedding.pkl"), 'rb'))
-        self.test_batch_size = 64
         self.max_seq_len = 128
         self.EMBEDDING_DIM = 100
         self.num_labels = len(self.label2Idx)
@@ -33,7 +32,6 @@ class Ner:
        
         model =  TFNer(max_seq_len=self.max_seq_len, embed_input_dim=len(self.word2Idx), embed_output_dim=self.EMBEDDING_DIM, weights=[self.embedding_matrix], num_labels=self.num_labels)
         model.load_weights(f"{model_dir}/model_weights")
-        #tf.train.Checkpoint.restore(f"{model_dir}/model_weights")
         logger.info("Model weights restored")
         return model
     
@@ -98,7 +96,7 @@ class Ner:
         assert len(label_pred) == len(words)
         zip_val = zip(words, label_pred, pred_logits)
         
-        output = [{"word":word,"tag":label,"confidence":confidence} for  word, label, confidence in zip_val]
+        output = [{"word":word,"tag":label} for  word, label in zip_val]
 
         logger.info(f"Labels predicted are {label_pred}")
         logger.info(f"with a confidence of {pred_logits}")
