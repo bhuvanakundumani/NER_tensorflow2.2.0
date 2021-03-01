@@ -75,9 +75,7 @@ tensorboard --logdir=model_output/logs/train --port=6006 --bind_all
 tensorboard --logdir=model_output/logs/valid --port=6006 --bind_all
 ```
 
-#### train loss 
 
 <img src="/img/trainloss.png" width="400" height="300">
 
-#### valid loss 
 <img src="/img/validloss.png" width="400" height="300">
