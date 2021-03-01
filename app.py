@@ -6,7 +6,7 @@ from infer import Ner
 app = Flask(__name__)
 CORS(app)
 
-model = Ner("model_*")
+model = Ner("model_output")
 
 @app.route("/predict",methods=['POST'])
 def predict():
