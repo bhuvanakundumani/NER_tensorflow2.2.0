@@ -14,12 +14,12 @@ python3 train.py --data data --output  model_output --overwrite True
 
 Predict on test Dataset
 ```bash
-python3 predict.py --data data --model_dir models_output
+python3 predict.py --data data --model_dir model_output
 ```
 Predict a single sentence - Assign the sentence to test_sentence variable. 
 
 ```bash
-python3 predict.py --data data --model_dir models_output --predsingle True
+python3 predict.py --data data --model_dir model_output --predsingle True
 ```
 
 Visualisations 
