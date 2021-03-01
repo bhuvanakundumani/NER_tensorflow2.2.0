@@ -32,7 +32,7 @@ class Ner:
     def load_model(self, model_dir):
        
         model =  TFNer(max_seq_len=self.max_seq_len, embed_input_dim=len(self.word2Idx), embed_output_dim=self.EMBEDDING_DIM, weights=[self.embedding_matrix], num_labels=self.num_labels)
-        model = model.load_weights(f"{model_dir}/model_weights")
+        model.load_weights(f"{model_dir}/model_weights")
         #tf.train.Checkpoint.restore(f"{model_dir}/model_weights")
         logger.info("Model weights restored")
         return model
@@ -108,6 +108,6 @@ class Ner:
         
 if __name__ == "__main__":
     text = "Steve went to Paris"
-    model_dir = "model_mar1"
+    model_dir = "model_output"
     Nermodel = Ner(model_dir)
-    words, pred, logits = Nermodel.predict(text)
+    output = Nermodel.predict(text)
